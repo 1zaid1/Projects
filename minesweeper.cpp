@@ -11,7 +11,7 @@ using namespace std;
 const int width = 500, height = 500;
 const int w = width, h = height;
 const int res = 25;
-const int boms = 30;
+const int boms = 50;
 
 struct cell {
     int val;
@@ -72,12 +72,16 @@ void draw() {
 }
 
 void finish() {
+    int bm = 0;
     for (int x = 0; x < w/res; x++) {
         for (int y = 0; y < h/res; y++) {
             DrawRectangle(x*res, -y*res+h-res, res, res, WHITE);
             if (grid[x][y].det) {
                 Color clr = RED;
-                if (grid[x][y].bom) clr = GREEN;
+                if (grid[x][y].bom) {
+                    clr = GREEN;
+                    bm++;
+                }
                 DrawRectangle(x*res+res/4, -y*res+h+res/4-res, res/2, res/2, clr);
             } else {
                 if (grid[x][y].bom) DrawCircle(x*res+res/2, -y*res+h+res/2 - res, res/4, RED);
@@ -88,6 +92,13 @@ void finish() {
             }
         }
     }
+
+    string s = to_string(bm);
+    s += '/';
+    s += to_string(boms);
+    Color c = RED;
+    if (win) c = GREEN;
+    DrawText(s.c_str(), 0, h, 50, c);
 }
 
 void dfs(int x, int y) {
@@ -103,10 +114,18 @@ void dfs(int x, int y) {
     dfs(x-1, y);
     dfs(x, y+1);
     dfs(x, y-1);
-    dfs(x+1, y+1);
-    dfs(x-1, y-1);
-    dfs(x-1, y+1);
-    dfs(x+1, y-1);
+
+    if (grid[x][y].val == 0) {
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (x+i < 0 || x+i >= w/res) continue;
+                if (y+j < 0 || y+j >= h/res) continue;
+                if (!grid[x+i][y+j].shown) {
+                    dfs(x+i, y+j);
+                }
+            }
+        }
+    }
 }
 
 void drawGrid() {
