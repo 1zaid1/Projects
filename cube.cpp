@@ -131,7 +131,6 @@ int main() {
             pp[i] = v3d(mult(pro, pp[i].ar()));
             v3d zg = v3d(mult(pro, v3d(0, -1000, 0).ar()));
             v3d gz = v3d(mult(pro, v3d(0, 1000, 0).ar()));
-            DrawLine(zg.x+trX, -zg.y+trY, gz.x+trX, -gz.y+trY, WHITE);
             DrawCircle(pp[i].x*100+trX, -pp[i].y*100+trY, str, WHITE);
         }
 
