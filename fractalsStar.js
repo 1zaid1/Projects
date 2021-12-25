@@ -27,10 +27,18 @@ function Line(a, b) {
 }
 
 function render() {
+    fill(255);
+    beginShape();
     for (let i = 0; i < lines.length; i++) {
-        lines[i].render();
-    }
+        vertex(lines[i].a.x, lines[i].a.y);
+    } endShape();
 }
+
+// function render() {
+//     for (let i = 0; i < lines.length; i++) {
+//         lines[i].render();
+//     }
+// }
 
 function frame() {
     let nw = [];
@@ -62,8 +70,8 @@ function setup() {
     let c = new Point(width/2    , height/2 - s3*r/2);
 
     lines.push(new Line(c, a));
-    lines.push(new Line(b, c));
     lines.push(new Line(a, b));
+    lines.push(new Line(b, c));
 
     frameRate(5);
     background(0);
